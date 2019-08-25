@@ -13,39 +13,40 @@ import '../utils/utility.dart';
 void main() => runApp(new NewsFeed());
 
 class NewsFeed extends StatelessWidget{
-  bool boolTrue = false;
+  final bool boolTrue = false;
 
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     Color main = Color(0xff2F4F4F);
-    return Scaffold(
-      appBar: boolTrue ? AppBar() : null,
-      body: new SafeArea(
-          child: new Column(
-            children: [
-              new Expanded(
-                flex: 1,
-                child: new Container(
-                    width: width,
-                    color: main,
-                    child: new GestureDetector(
-                      child: new FutureBuilder<List<News>>(
-                        future: fetchNews(),
-                        builder: (BuildContext context,AsyncSnapshot<List<News>> snapshot) {
-                          if (snapshot.hasError) print(snapshot.error);
+    return MaterialApp(
+        home: Scaffold(
+        appBar: boolTrue ? AppBar( ) : null,
+        body: new SafeArea(
+            child: new Column(
+              children: [
+                new Expanded(
+                  flex: 1,
+                  child: new Container(
+                     width: width,
+                     color: main,
+                      child: new GestureDetector(
+                        child: new FutureBuilder<List<News>>(
+                          future: fetchNews(),
+                          builder: (BuildContext context,AsyncSnapshot<List<News>> snapshot) {
+                            if (snapshot.hasError) print(snapshot.error);
 
-                          return snapshot.hasData
-                              ? NewsList(news: snapshot.data)
-                              : Center(child: CircularProgressIndicator());
-                        },
-                      ),
-                    )),
-              ),
-            ],
-          )),
-    );  }
-}
+                            return snapshot.hasData
+                                ? NewsList(snapshot.data)
+                                : Center(child: CircularProgressIndicator());
+                          },
+                        ),
+                      )),
+               ),
+              ],
+            )),
+      ));  }
+  }
 
 Future<List<News>> fetchNews() async {
   String url= Constant.list_url;
@@ -62,7 +63,7 @@ List<News> parsenews(String responsebody) {
 class NewsList extends StatelessWidget {
   final List<News> news;
 
-  NewsList({Key key, this.news}) : super(key: key);
+  NewsList(this.news) ;
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +79,6 @@ class NewsList extends StatelessWidget {
         return GestureDetector(
           onTap: (){
             var Id = news[index].id;
-            var Title = news[index].title;
 
             Navigator.push(context,MaterialPageRoute(builder: (context) => NewsDetails(Id),
             ),
