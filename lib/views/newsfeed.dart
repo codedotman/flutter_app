@@ -5,9 +5,8 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 
 import '../model/News.dart';
-import 'package:flutter_app/views/details.dart';
 import '../utils/constants.dart';
-import '../utils/utility.dart';
+import '../widgets/newslist.dart';
 
 
 void main() => runApp(new NewsFeed());
@@ -18,7 +17,7 @@ class NewsFeed extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
-    Color main = Color(0xff2F4F4F);
+    final Color main = Color(0xff2F4F4F);
     return MaterialApp(
         home: Scaffold(
         appBar: boolTrue ? AppBar( ) : null,
@@ -58,69 +57,5 @@ List<News> parsenews(String responsebody) {
   final parsed = json.decode(responsebody).cast<Map<String,dynamic>>();
   return parsed.map<News>((json) => new News.fromJson(json))
       .toList();
-}
-
-class NewsList extends StatelessWidget {
-  final List<News> news;
-
-  NewsList(this.news) ;
-
-  @override
-  Widget build(BuildContext context) {
-    final double height = (MediaQuery.of(context).size.height - kToolbarHeight - 24)/2;
-    final double width = MediaQuery.of(context).size.width/2;
-    return GridView.builder(
-      gridDelegate:SliverGridDelegateWithFixedCrossAxisCount(
-        childAspectRatio: width/height,
-        crossAxisCount: 2,
-      ),
-      itemCount: news.length,
-      itemBuilder: (BuildContext context,int index) {
-        return GestureDetector(
-          onTap: (){
-            var Id = news[index].id;
-
-            Navigator.push(context,MaterialPageRoute(builder: (context) => NewsDetails(Id),
-            ),
-            );
-          },
-          child: Hero(
-            tag: news[index].id,
-            child: Container(
-              margin: EdgeInsets.all(8.0),
-              child:Column(
-                  children: <Widget>[
-                    //Image
-                    SizedBox(
-                      width: double.infinity,
-                      height: 230.0,
-                      child: Image.memory(
-                        convertToImage(news[index].image),
-                        fit: BoxFit.fill,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 12.0,
-                    ),
-                    Container(
-                      alignment: Alignment.center,
-                      child: Text(
-                        news[index].title,
-                        style:TextStyle(
-                          fontFamily: 'Montserrat',
-                          color: Colors.white,
-                          fontWeight:FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ]
-              ),
-            ),
-          ),
-        );
-      },
-    );
-
-  }
 }
 
