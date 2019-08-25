@@ -14,16 +14,14 @@ class NewsDetails extends StatelessWidget{
 
   NewsDetails(this.newsID);
   final int newsID;
+  bool boolTrue = false;
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     Color main = Color(0xff2F4F4F);
 
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0.0,
-        backgroundColor: Colors.transparent,
-      ),
+      appBar: boolTrue ? AppBar() : null,
       body: SafeArea(
           child: Column(
             children: [

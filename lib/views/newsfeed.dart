@@ -13,16 +13,14 @@ import '../utils/utility.dart';
 void main() => runApp(new NewsFeed());
 
 class NewsFeed extends StatelessWidget{
+  bool boolTrue = false;
 
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     Color main = Color(0xff2F4F4F);
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0.0,
-        backgroundColor: Colors.transparent,
-      ),
+      appBar: boolTrue ? AppBar() : null,
       body: new SafeArea(
           child: new Column(
             children: [
